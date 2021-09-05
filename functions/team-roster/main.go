@@ -52,17 +52,19 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	teamId := request.QueryStringParameters["teamId"]
 	response := events.APIGatewayProxyResponse{}
 	if teamId == "" {
-		response.StatusCode = http.StatusBadRequest
-		response.Body = "Pass a teamId param"
+		return events.APIGatewayProxyResponse{
+			StatusCode: http.StatusBadRequest,
+			Body:       "Pass in a teamId param",
+		}, nil
 	}
 
 	users, err := SendZwiftPowerRequest(teamId)
 	if err != nil {
-		// response.StatusCode = http.StatusInternalServerError
-		// response.Body = err.Error()
 		return events.APIGatewayProxyResponse{}, err
 	} else {
-		response.Headers["Content-Type"] = "application/json"
+		response.Headers = map[string]string{
+			"Content-Type": "application/json",
+		}
 		usersStr, _ := json.Marshal(users)
 		response.Body = string(usersStr)
 	}
