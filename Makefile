@@ -1,4 +1,6 @@
 build: ui functions
+clean:
+	rm -rf build .netlify/functions
 
 ui:
 	npm run build

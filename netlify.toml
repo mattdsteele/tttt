@@ -1,6 +1,6 @@
 [build]
   base = "/"
-  command = "make build"
+  command = "make -B build"
   publish = "/build"
   functions = "/.netlify/functions"
 
