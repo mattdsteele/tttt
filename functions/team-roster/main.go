@@ -78,7 +78,7 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 func main() {
 	lambda.Start(Handler)
 }
-func testMain() {
+func mainT() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		// riderId := 12320
 		teamId := r.URL.Query().Get("teamId")
@@ -105,8 +105,6 @@ func authenticatedClient() http.Client {
 	client := http.Client{
 		Jar: jar,
 	}
-	u, _ := url.Parse("https://zwiftpower.com")
-	log.Println(len(client.Jar.Cookies(u)))
 	data := url.Values{}
 	data.Set("username", os.Getenv("ZP_UID"))
 	data.Set("password", os.Getenv("ZP_PASS"))
@@ -117,12 +115,10 @@ func authenticatedClient() http.Client {
 	r.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	r.Header.Add("Content-Length", strconv.Itoa(len(data.Encode())))
 
-	res, err := client.Do(r)
+	_, err := client.Do(r)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Println(res.Status)
-	log.Println(len(client.Jar.Cookies(u)))
 	return client
 }
 
@@ -132,9 +128,6 @@ func SendZwiftPowerRequest(teamId string, client http.Client) ([]ZwiftPowerUser,
 	req, _ := http.NewRequest("GET", requestUrl, nil)
 	req.Header.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36 Edg/92.0.902.84")
 	req.Header.Add("Accept", "application/json")
-
-	u, _ := url.Parse(requestUrl)
-	log.Println(len(client.Jar.Cookies(u)))
 
 	resp, err := client.Do(req)
 	if err != nil {
