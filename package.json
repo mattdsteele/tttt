@@ -27,6 +27,7 @@
         "@sentry/tracing": "6.12.0",
         "@use-it/interval": "1.0.0",
         "bootstrap": "4.6.0",
+        "lodash-es": "^4.17.21",
         "react": "17.0.2",
         "react-bootstrap": "1.6.1",
         "react-dom": "17.0.2",
@@ -57,6 +58,7 @@
         ]
     },
     "devDependencies": {
+        "@types/lodash-es": "^4.17.4",
         "@types/react": "17.0.19",
         "@types/react-dom": "17.0.9",
         "http-proxy-middleware": "^2.0.1"
