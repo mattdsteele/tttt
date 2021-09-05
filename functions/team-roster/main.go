@@ -67,7 +67,7 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 	} else {
 		response.Headers = map[string]string{
 			"Content-Type":  "application/json",
-			"Cache-Control": "public, s-maxage=720",
+			"Cache-Control": "public, s-maxage=14400",
 		}
 		usersStr, _ := json.Marshal(users)
 		response.Body = string(usersStr)
@@ -78,7 +78,7 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 func main() {
 	lambda.Start(Handler)
 }
-func TestApp() {
+func testMain() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		// riderId := 12320
 		teamId := r.URL.Query().Get("teamId")
@@ -101,7 +101,6 @@ func TestApp() {
 }
 
 func authenticatedClient() http.Client {
-	fmt.Println("hello")
 	jar, _ := cookiejar.New(&cookiejar.Options{})
 	client := http.Client{
 		Jar: jar,
@@ -111,26 +110,31 @@ func authenticatedClient() http.Client {
 	data := url.Values{}
 	data.Set("username", os.Getenv("ZP_UID"))
 	data.Set("password", os.Getenv("ZP_PASS"))
+	data.Set("login", "Login")
 	data.Set("redirect", "./events.php")
 
 	r, _ := http.NewRequest("POST", "https://zwiftpower.com/ucp.php?mode=login", strings.NewReader(data.Encode()))
 	r.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	r.Header.Add("Content-Length", strconv.Itoa(len(data.Encode())))
 
-	_, err := client.Do(r)
+	res, err := client.Do(r)
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Println(res.Status)
 	log.Println(len(client.Jar.Cookies(u)))
 	return client
 }
 
 func SendZwiftPowerRequest(teamId string, client http.Client) ([]ZwiftPowerUser, error) {
-	url := fmt.Sprintf("https://zwiftpower.com/api3.php?do=team_riders&id=%s", teamId)
+	requestUrl := fmt.Sprintf("https://zwiftpower.com/api3.php?do=team_riders&id=%s", teamId)
 
-	req, _ := http.NewRequest("GET", url, nil)
+	req, _ := http.NewRequest("GET", requestUrl, nil)
 	req.Header.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36 Edg/92.0.902.84")
 	req.Header.Add("Accept", "application/json")
+
+	u, _ := url.Parse(requestUrl)
+	log.Println(len(client.Jar.Cookies(u)))
 
 	resp, err := client.Do(req)
 	if err != nil {
@@ -141,7 +145,6 @@ func SendZwiftPowerRequest(teamId string, client http.Client) ([]ZwiftPowerUser,
 	if err != nil {
 		return nil, err
 	}
-	fmt.Printf("%s", bytes)
 	var zp = new(Response)
 	err = json.Unmarshal(bytes, zp)
 	if err != nil {
