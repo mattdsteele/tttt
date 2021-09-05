@@ -22,6 +22,7 @@ export function TeamList(props: Props) {
     return (
         <div>
             <ListGroup>
+                {teamList.length === 0 && <strong>Loading...</strong>}
                 {teamList.map((t) => {
                     return (
                         <ListGroup.Item action key={t.name} onClick={(_) => handleClick(t)}>
