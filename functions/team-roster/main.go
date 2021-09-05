@@ -9,6 +9,9 @@ import (
 	"net/http"
 	"net/http/cookiejar"
 	"os"
+
+	"github.com/aws/aws-lambda-go/events"
+	"github.com/aws/aws-lambda-go/lambda"
 )
 
 type Response struct {
@@ -45,7 +48,30 @@ type ZwiftPowerUser struct {
 	H15Wkg     string        `json:"h_15_wkg,omitempty"`
 }
 
+func Handler(request events.APIGatewayProxyRequest) *events.APIGatewayProxyResponse {
+	teamId := request.QueryStringParameters["teamId"]
+	response := &events.APIGatewayProxyResponse{}
+	if teamId == "" {
+		response.StatusCode = http.StatusBadRequest
+		response.Body = "Pass a teamId param"
+	}
+
+	users, err := SendZwiftPowerRequest(teamId)
+	if err != nil {
+		response.StatusCode = http.StatusInternalServerError
+		response.Body = err.Error()
+	} else {
+		response.Headers["Content-Type"] = "application/json"
+		usersStr, _ := json.Marshal(users)
+		response.Body = string(usersStr)
+	}
+	return response
+}
+
 func main() {
+	lambda.Start(Handler)
+}
+func TestApp() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		// riderId := 12320
 		teamId := r.URL.Query().Get("teamId")
