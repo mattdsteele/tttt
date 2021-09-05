@@ -23,7 +23,6 @@ import { Round, State } from "../types";
 import { AthletesSettings } from "./AthletesSettings";
 import { CopyButton } from "./CopyButton";
 import { Countdown } from "./Countdown";
-import { DiscordBot } from "./DiscordBot";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
 
@@ -286,7 +285,6 @@ export default function App() {
                     </Card.Body>
                 </Card>
 
-                <DiscordBot />
                 <Footer />
             </Container>
         </>
