@@ -13,14 +13,7 @@ export function Footer() {
                     by{" "}
                     <a href="mailto:tttt@andipaetzold.com" rel="noopener noreferrer" target="_blank">
                         Andi P&auml;tzold
-                    </a>
-                </small>
-            </p>
-            <p>
-                <small>
-                    <a href="https://paypal.me/andipaetzold" rel="noopener noreferrer" target="_blank">
-                        <FontAwesomeIcon icon={faPaypal} /> Donate via PayPal
-                    </a>
+                    </a>, extended by the Zwift Crushin Daddies
                 </small>
             </p>
             <p>
