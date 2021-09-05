@@ -7,7 +7,6 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"net/http/cookiejar"
 	"os"
 
 	"github.com/aws/aws-lambda-go/events"
@@ -99,15 +98,13 @@ func TestApp() {
 
 func SendZwiftPowerRequest(teamId string) ([]ZwiftPowerUser, error) {
 	url := fmt.Sprintf("https://zwiftpower.com/api3.php?do=team_riders&id=%s", teamId)
-	jar, _ := cookiejar.New(&cookiejar.Options{})
-	client := http.Client{
-		Jar: jar,
-	}
+	client := http.Client{}
 
 	cookie := &http.Cookie{
 		Name:  "phpbb3_lswlk_sid",
 		Value: os.Getenv("ZP_SID"),
 	}
+	fmt.Println(os.Getenv("ZP_SID"))
 	req, _ := http.NewRequest("GET", url, nil)
 	req.AddCookie(cookie)
 
@@ -120,6 +117,7 @@ func SendZwiftPowerRequest(teamId string) ([]ZwiftPowerUser, error) {
 	if err != nil {
 		return nil, err
 	}
+	fmt.Printf("%s", bytes)
 	var zp = new(Response)
 	err = json.Unmarshal(bytes, zp)
 	if err != nil {

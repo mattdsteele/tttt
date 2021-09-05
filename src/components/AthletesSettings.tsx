@@ -11,10 +11,6 @@ interface Props {
 }
 
 export function AthletesSettings({ athletes, onChange, state }: Props) {
-    const discordCommand = `!t config athletes ${athletes
-        .map((athlete) => `${athlete.text.trim().replaceAll(" ", "_").replaceAll(" ", "_")}:${athlete.time}`)
-        .join(" ")}`;
-
     const getBackgroundColor = (athleteIndex: number) => {
         if (state === "stopped") {
             return "#fff";
