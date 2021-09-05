@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import {sortBy} from 'lodash-es';
+import { TeamMember } from "../types";
 const url = "/.netlify/functions/team-roster";
 const teamId = 12320;
 export function TeamList() {
-    const [teamList, setTeamList] = useState<any[]>([]);
+    const [teamList, setTeamList] = useState<TeamMember[]>([]);
     const loadData = async () => {
         const res = await fetch(`${url}?teamId=${teamId}`)
-        const data = await res.json();
+        const data: TeamMember[] = await res.json();
         setTeamList(sortBy(data, ['name']));
     };
     useEffect(() => {

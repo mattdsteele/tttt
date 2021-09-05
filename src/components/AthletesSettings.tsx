@@ -1,9 +1,8 @@
-import { faSkullCrossbones, faTrash, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faSkullCrossbones, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, ButtonGroup, Col, Form, InputGroup, Row, ToggleButton } from "react-bootstrap";
 import { DEFAULT_ATHLETE_NAMES, DEFAULT_TIME_PER_ATHLETE } from "../common/constants";
 import { Athlete, State } from "../types";
-import { CopyButton } from "./CopyButton";
 
 interface Props {
     athletes: Athlete[];
@@ -31,7 +30,7 @@ export function AthletesSettings({ athletes, onChange, state }: Props) {
     return (
         <>
             <h2 className="mb-3">
-                Athletes <CopyButton command={discordCommand} />
+                Athletes
             </h2>
 
             {athletes.map((athlete, athleteIndex) => (

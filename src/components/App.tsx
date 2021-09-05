@@ -21,7 +21,6 @@ import { secondsToString } from "../common/util";
 import { useWakeLock } from "../hooks/useWakeLock";
 import { Round, State } from "../types";
 import { AthletesSettings } from "./AthletesSettings";
-import { CopyButton } from "./CopyButton";
 import { Countdown } from "./Countdown";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
@@ -272,7 +271,7 @@ export default function App() {
 
                         <Form.Group controlId="startDelay">
                             <Form.Label>
-                                Start Delay (in seconds) <CopyButton command={`!t config delay ${startDelay}`} />
+                                Start Delay (in seconds)
                             </Form.Label>
                             <Form.Control
                                 type="number"
