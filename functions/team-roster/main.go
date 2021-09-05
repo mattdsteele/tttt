@@ -107,6 +107,8 @@ func SendZwiftPowerRequest(teamId string) ([]ZwiftPowerUser, error) {
 	fmt.Println(os.Getenv("ZP_SID"))
 	req, _ := http.NewRequest("GET", url, nil)
 	req.AddCookie(cookie)
+	req.Header.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36 Edg/92.0.902.84")
+	req.Header.Add("Accept", "application/json")
 
 	resp, err := client.Do(req)
 	if err != nil {
