@@ -48,9 +48,9 @@ type ZwiftPowerUser struct {
 	H15Wkg     string        `json:"h_15_wkg,omitempty"`
 }
 
-func Handler(request events.APIGatewayProxyRequest) *events.APIGatewayProxyResponse {
+func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	teamId := request.QueryStringParameters["teamId"]
-	response := &events.APIGatewayProxyResponse{}
+	response := events.APIGatewayProxyResponse{}
 	if teamId == "" {
 		response.StatusCode = http.StatusBadRequest
 		response.Body = "Pass a teamId param"
@@ -58,14 +58,15 @@ func Handler(request events.APIGatewayProxyRequest) *events.APIGatewayProxyRespo
 
 	users, err := SendZwiftPowerRequest(teamId)
 	if err != nil {
-		response.StatusCode = http.StatusInternalServerError
-		response.Body = err.Error()
+		// response.StatusCode = http.StatusInternalServerError
+		// response.Body = err.Error()
+		return events.APIGatewayProxyResponse{}, err
 	} else {
 		response.Headers["Content-Type"] = "application/json"
 		usersStr, _ := json.Marshal(users)
 		response.Body = string(usersStr)
 	}
-	return response
+	return response, nil
 }
 
 func main() {
