@@ -63,7 +63,8 @@ func Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyRespo
 		return events.APIGatewayProxyResponse{}, err
 	} else {
 		response.Headers = map[string]string{
-			"Content-Type": "application/json",
+			"Content-Type":  "application/json",
+			"Cache-Control": "public, s-maxage=720",
 		}
 		usersStr, _ := json.Marshal(users)
 		response.Body = string(usersStr)

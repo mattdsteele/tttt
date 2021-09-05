@@ -66,6 +66,6 @@ async function isSupported(): Promise<boolean> {
         return false;
     }
 
-    const result = await navigator.permissions.query({ name: "clipboard-write" });
+    const result = await navigator.permissions.query({name: 'clipboard-write' as any});
     return result.state === "granted";
 }
