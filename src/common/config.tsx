@@ -9,7 +9,7 @@ interface Config {
 
 const LOCAL_STORAGE_KEY = "config";
 
-const DEFAULT_ATHLETES = DEFAULT_ATHLETE_NAMES.slice(0, 6).map((athleteName) => ({
+const DEFAULT_ATHLETES = DEFAULT_ATHLETE_NAMES.slice(0, 1).map((athleteName) => ({
     text: athleteName,
     enabled: true,
     time: DEFAULT_TIME_PER_ATHLETE,

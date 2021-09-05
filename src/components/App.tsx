@@ -24,7 +24,6 @@ import { AthletesSettings } from "./AthletesSettings";
 import { Countdown } from "./Countdown";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
-import { TeamList } from "./TeamList";
 
 const initialConfig = loadConfig();
 
@@ -284,7 +283,6 @@ export default function App() {
                         </Form.Group>
                     </Card.Body>
                 </Card>
-                <TeamList />
 
                 <Footer />
             </Container>

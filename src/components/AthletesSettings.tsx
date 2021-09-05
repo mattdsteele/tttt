@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, ButtonGroup, Col, Form, InputGroup, Row, ToggleButton } from "react-bootstrap";
 import { DEFAULT_ATHLETE_NAMES, DEFAULT_TIME_PER_ATHLETE } from "../common/constants";
 import { Athlete, State } from "../types";
+import { TeamList } from "./TeamList";
 
 interface Props {
     athletes: Athlete[];
@@ -10,6 +11,7 @@ interface Props {
     state: State;
 }
 
+const firstName = ( fullName: string ) => fullName.split(' ')[0];
 export function AthletesSettings({ athletes, onChange, state }: Props) {
     const getBackgroundColor = (athleteIndex: number) => {
         if (state === "stopped") {
@@ -25,9 +27,7 @@ export function AthletesSettings({ athletes, onChange, state }: Props) {
 
     return (
         <>
-            <h2 className="mb-3">
-                Athletes
-            </h2>
+            <h2 className="mb-3">Athletes</h2>
 
             {athletes.map((athlete, athleteIndex) => (
                 <Form.Group key={athleteIndex} as={Row} controlId={`athlete-${athleteIndex}`}>
@@ -95,22 +95,28 @@ export function AthletesSettings({ athletes, onChange, state }: Props) {
             ))}
 
             {state === "stopped" && (
-                <Button
-                    variant="light"
-                    block
-                    onClick={() => {
-                        onChange([
-                            ...athletes,
-                            {
-                                text: DEFAULT_ATHLETE_NAMES[athletes.length] ?? "",
-                                time: DEFAULT_TIME_PER_ATHLETE,
-                                enabled: true,
-                            },
-                        ]);
-                    }}
-                >
-                    <FontAwesomeIcon icon={faPlus} /> Add athlete
-                </Button>
+                <>
+                    <Button
+                        variant="light"
+                        block
+                        onClick={() => {
+                            onChange([
+                                ...athletes,
+                                {
+                                    text: DEFAULT_ATHLETE_NAMES[athletes.length] ?? "",
+                                    time: DEFAULT_TIME_PER_ATHLETE,
+                                    enabled: true,
+                                },
+                            ]);
+                        }}
+                    >
+                        <FontAwesomeIcon icon={faPlus} /> Add athlete
+                    </Button>
+                    <p>Or click to add:</p>
+                    <TeamList handleClick={team => {
+                        onChange([...athletes, {text: firstName(team.name), time: DEFAULT_TIME_PER_ATHLETE, enabled: true}])
+                    }} />
+                </>
             )}
         </>
     );
